@@ -1,6 +1,10 @@
+
 import { useEffect, useState } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
 
 const client = generateClient<Schema>();
 
@@ -17,23 +21,46 @@ function App() {
     client.models.Todo.create({ content: window.prompt("Todo content") });
   }
 
+  function deleteTodo(id: string) {
+    // Delete the todo from the Amplify DataStore
+    client.models.Todo.delete({ id })
+      .then(() => {
+        // Update the local state to reflect the deletion
+        setTodos(todos.filter((todo) => todo.id !== id));
+      })
+      .catch((error) => {
+        console.error("Error deleting todo:", error);
+        // Handle any potential errors during deletion
+      });
+  }
+
   return (
+        
+    <Authenticator>
+      {({ signOut }) => (
     <main>
-      <h1>My todos</h1>
+      <h1 style={{ textAlign: "center" }}>My Todos</h1>
       <button onClick={createTodo}>+ new</button>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
+          <li key={todo.id}>
+            {todo.content}
+            <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+          </li>
         ))}
       </ul>
       <div>
-        🥳 App successfully hosted. Try creating a new todo.
+         App successfully hosted. Try creating a new todo.
         <br />
-        <a href="https://docs.amplify.aws/react/start/quickstart/#make-frontend-updates">
-          Review next step of this tutorial.
+        <a href="https://github.com/esvin2661/amplify-vite-react-template">
+          View code on this GitHub Repo.
         </a>
       </div>
+      <button onClick={signOut}>Sign out</button>
     </main>
+        
+      )}
+      </Authenticator>
   );
 }
 

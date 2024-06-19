@@ -1,3 +1,5 @@
+
+
 body {
   margin: 0;
   background: linear-gradient(180deg, rgb(117, 81, 194), rgb(255, 255, 255));
@@ -62,4 +64,19 @@ li:hover {
 a {
   font-weight: 800;
   text-decoration: none;
+}
+/* Target the delete button inside the list item */
+li button {
+  /* Reduce button size */
+  font-size: 0.8rem; /* Adjust font size for smaller button */
+  padding: 5px 10px; /* Adjust padding for desired size */
+  
+  /* Move button to the right */
+  float: right; /* Or use display: flex; justify-content: flex-end; for more control */
+  
+  /* Optional: Style the button (optional) */
+  background-color: #e04444; /* Example red color */
+  color: white;
+  border: none;
+  border-radius: 5px; /* Add rounded corners */
 }
